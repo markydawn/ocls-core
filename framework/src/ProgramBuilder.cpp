@@ -716,6 +716,15 @@ Program *ProgramBuilder::createTimeIntegratorProgram(const Domain *domain, const
 }
 
 
+  // because I use emacs,  we get (superior) emacs indentation here. fix this later
+  Program* ProhramBuilder::createSourceProgram(const Domain *domain, const CLSSource::Function* function, size_t* return_values) {
+    //TODO: make both boundary and function in one. Automatically reflect. That is probably the best solution
+    std::string source = appendDependencies(domain, function);
+
+    // get some inspiration or reuse stuff from boundary maybe?
+  }
+
+
 char ProgramBuilder::toHex(int i) {
     if (i < 10){
         return (char)(48+i); // ASCII codes numerals
