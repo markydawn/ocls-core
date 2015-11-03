@@ -110,6 +110,11 @@ int oclsCreateFluxFunction(Framework framework, Domain domain, CLSSource src, co
 */
 int oclsCreateIntegratorFunction(Framework framework, Domain domain, CLSSource src, const char* function, IntegratorFunction* func_out);
 
+  /**
+   * Create a Source function
+   */
+  int oclsCreateSourceFunction(Framework framework, Domain domain, CLSSource src, const char* function, IntegratorFunction* func_out);
+
 /**
 * Call a functions
 */

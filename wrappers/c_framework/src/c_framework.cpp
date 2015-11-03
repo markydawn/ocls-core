@@ -157,6 +157,22 @@ int oclsCreateIntegratorFunction(Framework framework, Domain domain, CLSSource s
     return ERROR_OK;
 }
 
+  int oclsCreateSourceFunction(Framework framework, Domain domain, CLSSource src, const char* function, IntegratorFunction* func_out) {
+    // looks like there is lots of leaks above. Try to fix them too.
+    // is it maybe just to fix the deconstructors?
+
+    // just the same as above for integratorfunction. only difference is the contents of SourceFunction
+    try {
+      (*func_out) = (CallableFunction)malloc(sizeof(CallableFunctionHandle)); //< has leaks. TODO: fix
+      ocls::IntegratorFunction func = reinterpret_cast<ocls::Framework *>(framework)->createSourceFunction(*reinterpret_cast<ocls::Domain*>(&domain), reinterpret_cast<ocls::CLSSource *>(src)->getFunction(std::string(function)));
+      (*func_out)->function = new ocls::SourceFunction(func); //< omg! has leaks! TODO: fix
+    }catch(std::exception& e) {
+      strcpy(error_buffer, e.what());
+      return ERROR_FATAL;
+    }
+    return ERROR_OK;
+  }
+
 int oclsCall(CallableFunction function, size_t length, Parameter* args, Data* return_out, int* return_length) {
     try {
         ocls::ReturnType returnType;

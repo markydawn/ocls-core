@@ -98,7 +98,7 @@ public:
     /**
      * Create source function program
      */
-    Program* createSourceProgram(const Domain* domain, const CLSSource::Function* function, size_t* return_values);
+    //Program* createSourceProgram(const Domain* domain, const CLSSource::Function* function, size_t* return_values);
     
 private:
 

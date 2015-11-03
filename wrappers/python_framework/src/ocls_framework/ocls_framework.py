@@ -86,6 +86,11 @@ class Framework:
         """ Create a function type """
         return IntegratorFunction(self, domain, src, function)
 
+    # source function
+    def createSourceFunction(self, domain, src, function):
+        """ Creates a source term function """
+        return SourceFunction(self, domain, src, function)
+
 # Defaults Context
 __framework__ = Framework()
 

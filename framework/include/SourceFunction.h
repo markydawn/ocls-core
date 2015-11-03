@@ -19,6 +19,7 @@
 // TODO: includes
 #include "CLSSource.h"
 
+#include "BoundaryFunction.h"
 
 namespace ocls {
   /** \ingroup main_api
@@ -37,6 +38,7 @@ namespace ocls {
 
   private:
     Program* m_program;
+    BoundaryFunction* m_boundary;
 
     std::vector<Data*> m_returnValues;
   }

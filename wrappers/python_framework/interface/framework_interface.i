@@ -67,6 +67,9 @@ typedef CallableFunction BoundaryFunction;
 typedef CallableFunction FluxFunction;
 typedef CallableFunction IntegratorFunction;
 
+// source function
+typedef CallableFunction SourceFunction;
+
 typedef struct {
     int count;
 
@@ -301,6 +304,20 @@ IntegratorFunction CreateIntegratorFunction(Framework framework, Domain domain, 
 
     return func;
 }
+%}
+
+// source function
+%rename(oclsCreateSourceFunction) CreateSourceFunction;
+%inline %{
+  SourceFunction CreateSourceFunction(Framework framework, Domain domain, CLSSource src, const char* function) {
+    SourceFunction func;
+    int err = oclsCreateSourceFunction(framework, domain, src, function, &func);
+
+    if(err != ERROR_OK) 
+      PyErr_SetString(PyExc_RuntimeError, oclsGetError());
+
+    return func;
+  }
 %}
 
 %typemap(in, numinputs=0) int* count (int temp) {
