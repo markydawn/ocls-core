@@ -19,6 +19,7 @@
 // TODO: includes
 #include "CLSSource.h"
 
+#include "CallableFunction.h"
 #include "BoundaryFunction.h"
 
 namespace ocls {
@@ -38,10 +39,10 @@ namespace ocls {
 
   private:
     Program* m_program;
-    BoundaryFunction* m_boundary;
+    CallableFunction* m_boundary;
 
     std::vector<Data*> m_returnValues;
-  }
+  };
   /** @} */
 }
 #endif 

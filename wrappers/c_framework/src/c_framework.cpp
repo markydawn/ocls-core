@@ -164,7 +164,7 @@ int oclsCreateIntegratorFunction(Framework framework, Domain domain, CLSSource s
     // just the same as above for integratorfunction. only difference is the contents of SourceFunction
     try {
       (*func_out) = (CallableFunction)malloc(sizeof(CallableFunctionHandle)); //< has leaks. TODO: fix
-      ocls::IntegratorFunction func = reinterpret_cast<ocls::Framework *>(framework)->createSourceFunction(*reinterpret_cast<ocls::Domain*>(&domain), reinterpret_cast<ocls::CLSSource *>(src)->getFunction(std::string(function)));
+      ocls::SourceFunction func = reinterpret_cast<ocls::Framework *>(framework)->createSourceFunction(*reinterpret_cast<ocls::Domain*>(&domain), reinterpret_cast<ocls::CLSSource *>(src)->getFunction(std::string(function)));
       (*func_out)->function = new ocls::SourceFunction(func); //< omg! has leaks! TODO: fix
     }catch(std::exception& e) {
       strcpy(error_buffer, e.what());

@@ -11,21 +11,22 @@ namespace ocls {
 
   SourceFunction::SourceFunction(Domain* domain, Framework* framework, CLSSource::Function* function) :
     CallableFunction(domain, framework, function->parameters), m_program(NULL) {
-    ProgramManager* man = framework->getProgramManager();
+    ProgramManager* man = framework->getPrograManager(); // TYPO in the code base! TODO: maybe fix it
     ProgramBuilder builder(m_framework->getComputeContext());
     size_t return_values = 0;
 
     // reflective boundaries for the source function data (ternary is faster right? or is that only in Java?)
     std::string boundary_function = "void reflectBounds(float* S) {\n store(S, fetch_mirror(S, cell.x" 
-      + (m_domain.getDimensions() == 1 ? "" : (m_domain.getDimensions() == 2 ? "y" : "yz")) 
-      + "), cell.x); \n}";
+      + std::string(m_domain.getDimensions() == 1 ? "" : (m_domain.getDimensions() == 2 ? "y" : "yz")) 
+      + std::string("), cell.x); \n}");
+
 
     //m_program = man->manage(builder.createSourceProgram(&m_domain, function, &return_values)); // WILL NOT COMPILE YET!
     // temporary solution for testing
     m_program = man->manage(builder.createFluxProgram(&m_domain, function, &return_values));
 
-    // boundary (maybe this way of doing it is ineffective or wrong?)
-    m_boundary = new BoundaryFunction(&m_domain, framework, boundary_function);
+    // boundary this is maybe a bit hacky.
+    m_boundary = new BoundaryFunction(&m_domain, framework, framework->getSourceLoader()->loadFromString(boundary_function)->getFunction("reflectBounds"));
     // boundary functions have no return values...
 
     for(int i = 0; i < return_values; ++i) {
@@ -44,9 +45,8 @@ namespace ocls {
     ProgramLauncher::launch(m_program, params, false);
 
     // call the boundary function
-    // what should the parameters be? check where the call-function is called.
-    m_boundary->call(params);
-    // how can we apply the above? like this?
+    // unsure whether this will work or not... compiles atleast
+    m_boundary->call(1, &params[0]); 
 
     if(m_returnValues.size() == 1) 
       return ReturnType(m_returnValues[0]);
